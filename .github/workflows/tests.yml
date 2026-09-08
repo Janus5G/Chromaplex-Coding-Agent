@@ -17,6 +17,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install Python test dependencies
+        run: python -m pip install numpy
       - name: Install sandbox test tools
         run: |
           sudo apt-get update

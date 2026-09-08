@@ -16,7 +16,7 @@ Section: devel
 Priority: optional
 Architecture: ${ARCH}
 Maintainer: Janus Rokkjær
-Depends: python3, python3-pyside6.qtcore, python3-pyside6.qtgui, python3-pyside6.qtwidgets, bubblewrap, coreutils, clamav
+Depends: python3, python3-pyside6.qtcore, python3-pyside6.qtgui, python3-pyside6.qtwidgets, bubblewrap, coreutils, clamav, python3-numpy
 Recommends: python3-pyside6.qtwebenginewidgets, libsecret-tools, gcc, make, clamav-freshclam, wabt, apparmor, apparmor-utils, cryptsetup-bin
 Description: Secure standalone coding agent with ChromaPlex CPL/CPA support
  Multi-mode Linux desktop application for generating, editing, previewing,
