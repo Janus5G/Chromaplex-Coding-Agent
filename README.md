@@ -1,7 +1,6 @@
 # Chromaplex Coding Agent
 
 [![Version](https://img.shields.io/badge/version-v0.4.0--alpha-orange)](https://github.com/Janus5G/Chromaplex-Coding-Agent/releases)
-[![Tests](https://github.com/Janus5G/Chromaplex-Coding-Agent/actions/workflows/tests.yml/badge.svg)](https://github.com/Janus5G/Chromaplex-Coding-Agent/actions/workflows/tests.yml)
 [![Tests Passed](https://img.shields.io/badge/tests-103%20passed-brightgreen)](TEST_REPORT.md)
 [![Failures](https://img.shields.io/badge/failures-0-brightgreen)](TEST_REPORT.md)
 [![Security](https://img.shields.io/badge/Secure%20Compile%20Gate-enabled-brightgreen)](SECURE_COMPILE_GATE.md)
