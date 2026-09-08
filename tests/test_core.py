@@ -85,7 +85,7 @@ class HostRuntimeTests(unittest.TestCase):
             _write_linux_manifest(root)
             (root / "main.py").write_text('print("PY_OK")\n', encoding="utf-8")
             result = run_project(root, "main.py", "Python (Linux)", 10, scanner=_CleanScanner())
-            self.assertTrue(result.success)
+            self.assertTrue(result.success, f"runtime failed: {result.errors} | output: {result.output}")
             self.assertIn("PY_OK", result.stdout)
 
     @unittest.skipUnless(shutil.which("gcc") and shutil.which("bwrap"), "gcc/bubblewrap not installed")
@@ -98,7 +98,7 @@ class HostRuntimeTests(unittest.TestCase):
                 encoding="utf-8",
             )
             result = run_project(root, "main.c", "C", 10, scanner=_CleanScanner())
-            self.assertTrue(result.success)
+            self.assertTrue(result.success, f"runtime failed: {result.errors} | output: {result.output}")
             self.assertIn("C_OK", result.stdout)
 
 

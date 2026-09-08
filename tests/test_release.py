@@ -186,7 +186,7 @@ class HostRuntimeExtendedTests(unittest.TestCase):
             _write_linux_manifest(root)
             (root / "main.sh").write_text('printf "BASH_OK\\n"\n', encoding="utf-8")
             result = run_project(root, "main.sh", "Bash", 10, scanner=_CleanScanner())
-            self.assertTrue(result.success)
+            self.assertTrue(result.success, f"runtime failed: {result.errors} | output: {result.output}")
             self.assertIn("BASH_OK", result.stdout)
 
     @unittest.skipUnless(shutil.which("make") and shutil.which("bwrap"), "make/bubblewrap not installed")
@@ -196,7 +196,7 @@ class HostRuntimeExtendedTests(unittest.TestCase):
             _write_linux_manifest(root)
             (root / "Makefile").write_text('all:\n\t@echo MAKE_OK\n', encoding="utf-8")
             result = run_project(root, "Makefile", "Makefile", 10, scanner=_CleanScanner())
-            self.assertTrue(result.success)
+            self.assertTrue(result.success, f"runtime failed: {result.errors} | output: {result.output}")
             self.assertIn("MAKE_OK", result.stdout)
 
     @unittest.skipUnless(shutil.which("gcc") and shutil.which("bwrap"), "gcc/bubblewrap not installed")
