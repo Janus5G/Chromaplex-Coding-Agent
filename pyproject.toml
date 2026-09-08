@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chromaplex-coding-agent"
+version = "0.4.0"
+description = "Standalone multi-mode AI code generator/editor with ChromaPlex CPL/CPA support"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Janus Rokkjær"}]
+
+[project.scripts]
+chromaplex-coding-agent = "chromaplex_agent.app:main"
+chromaplex-verify-build = "chromaplex_agent.verify_build:main"
+chromaplex-hardening = "chromaplex_agent.hardening:main"

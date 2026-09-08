@@ -1,0 +1,2 @@
+# Development convenience only. The .deb uses Ubuntu/Debian system packages.
+PySide6>=6.8

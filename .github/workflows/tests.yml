@@ -1,0 +1,29 @@
+name: Security and release tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install sandbox test tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap gcc make wabt apparmor apparmor-utils cryptsetup-bin clamav
+      - name: Build Debian package
+        run: ./packaging/build_deb.sh
+      - name: Compile Python sources
+        run: python -m compileall -q chromaplex_agent
+      - name: Run security and release tests
+        run: python -m unittest discover -s tests -v

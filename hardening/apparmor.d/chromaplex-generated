@@ -1,0 +1,36 @@
+#include <tunables/global>
+
+profile chromaplex-generated flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+
+  # The generated application gets immutable runtime/toolchain files only.
+  /usr/** rixm,
+  /usr/local/** rixm,
+  /bin/** rixm,
+  /sbin/** rixm,
+  /lib/** rixm,
+  /lib64/** rixm,
+  /etc/ld.so.cache r,
+  /etc/ssl/** r,
+  /etc/ca-certificates/** r,
+  /etc/nsswitch.conf r,
+
+  /workspace/** rwkix,
+  /tmp/** rwkix,
+  /proc/** r,
+  /dev/null rw,
+  /dev/zero rw,
+  /dev/random r,
+  /dev/urandom r,
+
+  # Explicitly protect host/user secrets and system configuration.
+  deny /root/** rwklx,
+  deny /home/** rwklx,
+  deny /etc/** wklx,
+  deny /boot/** rwklx,
+  deny /sys/** wklx,
+
+  # No network rule is granted. AppArmor therefore supplies a second deny-by-
+  # default network boundary when this profile is attached, in addition to the
+  # bubblewrap network namespace.
+}

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Chromaplex Coding Agent
+Comment=Generate, edit, test and export Linux, Windows, Web and ChromaPlex code
+Exec=chromaplex-coding-agent
+Icon=applications-development
+Terminal=false
+Categories=Development;IDE;
+Keywords=ChromaPlex;CPL;CPA;AI;Code;Editor;
+StartupNotify=true
