@@ -17,6 +17,7 @@ from chromaplex_agent.project import Workspace, parse_project_json, validate_rel
 from chromaplex_agent.runtimes.chromaplex import build_binary, compile_cpl, run_cpa, run_cpl
 from chromaplex_agent.runtimes.host import run_project
 from chromaplex_agent.malware_scan import MalwareScanResult, MalwareScanState
+from chromaplex_agent.capabilities import CAPABILITY_FILENAME, default_manifest
 
 
 class _CleanScanner:
@@ -24,6 +25,13 @@ class _CleanScanner:
         return MalwareScanResult(MalwareScanState.CLEAN, "test-scanner", "clean")
     def scan_directory(self, path):
         return MalwareScanResult(MalwareScanState.CLEAN, "test-scanner", "clean")
+
+
+def _write_linux_manifest(root: Path) -> None:
+    (root / CAPABILITY_FILENAME).write_text(
+        default_manifest("linux-desktop").to_json(),
+        encoding="utf-8",
+    )
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -175,6 +183,7 @@ class HostRuntimeExtendedTests(unittest.TestCase):
     def test_bash_runtime(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
+            _write_linux_manifest(root)
             (root / "main.sh").write_text('printf "BASH_OK\\n"\n', encoding="utf-8")
             result = run_project(root, "main.sh", "Bash", 10, scanner=_CleanScanner())
             self.assertTrue(result.success)
@@ -184,6 +193,7 @@ class HostRuntimeExtendedTests(unittest.TestCase):
     def test_makefile_runtime(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
+            _write_linux_manifest(root)
             (root / "Makefile").write_text('all:\n\t@echo MAKE_OK\n', encoding="utf-8")
             result = run_project(root, "Makefile", "Makefile", 10, scanner=_CleanScanner())
             self.assertTrue(result.success)
@@ -193,6 +203,7 @@ class HostRuntimeExtendedTests(unittest.TestCase):
     def test_c_compile_failure_is_reported(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
+            _write_linux_manifest(root)
             (root / "bad.c").write_text("int main( {", encoding="utf-8")
             result = run_project(root, "bad.c", "C", 10, scanner=_CleanScanner())
             self.assertFalse(result.success)

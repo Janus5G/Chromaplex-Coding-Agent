@@ -11,6 +11,7 @@ from chromaplex_agent.sandbox import SandboxUnavailable, build_bwrap_command
 from chromaplex_agent.runtimes.chromaplex import build_binary, compile_cpl, run_cpl
 from chromaplex_agent.runtimes.host import run_project
 from chromaplex_agent.malware_scan import MalwareScanResult, MalwareScanState
+from chromaplex_agent.capabilities import CAPABILITY_FILENAME, default_manifest
 
 
 class _CleanScanner:
@@ -18,6 +19,13 @@ class _CleanScanner:
         return MalwareScanResult(MalwareScanState.CLEAN, "test-scanner", "clean")
     def scan_directory(self, path):
         return MalwareScanResult(MalwareScanState.CLEAN, "test-scanner", "clean")
+
+
+def _write_linux_manifest(root: Path) -> None:
+    (root / CAPABILITY_FILENAME).write_text(
+        default_manifest("linux-desktop").to_json(),
+        encoding="utf-8",
+    )
 
 
 class ProjectTests(unittest.TestCase):
@@ -74,6 +82,7 @@ class HostRuntimeTests(unittest.TestCase):
     def test_linux_python_runtime(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
+            _write_linux_manifest(root)
             (root / "main.py").write_text('print("PY_OK")\n', encoding="utf-8")
             result = run_project(root, "main.py", "Python (Linux)", 10, scanner=_CleanScanner())
             self.assertTrue(result.success)
@@ -83,6 +92,7 @@ class HostRuntimeTests(unittest.TestCase):
     def test_linux_c_runtime(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
+            _write_linux_manifest(root)
             (root / "main.c").write_text(
                 '#include <stdio.h>\nint main(void){puts("C_OK");return 0;}\n',
                 encoding="utf-8",
